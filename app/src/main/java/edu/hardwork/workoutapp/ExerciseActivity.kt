@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.hardwork.workoutapp.databinding.ActivityExerciseBinding
 import java.util.Locale
@@ -35,7 +34,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var player: MediaPlayer? = null
 
     //  for Recycler View
-    private var exerciseAdapter:ExerciseStatusAdapter? = null
+    private var exerciseAdapter: ExerciseStatusAdapter? = null
+
+
+    private var restTimerDuration: Long = 3
+    private var exerciseTimerDuration: Long = 5
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,9 +66,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
 
-    private fun setupExerciseStatusRecyclerView(){
+    private fun setupExerciseStatusRecyclerView() {
         binding?.rvExerciseStatus?.layoutManager =
-            LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
 
@@ -129,7 +132,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun setRestProgressBar() {
         binding?.progressBar?.progress = restProgress
-        restTimer = object : CountDownTimer(1000, 1000) {
+        restTimer = object : CountDownTimer(restTimerDuration * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 restProgress++
                 binding?.progressBar?.progress = 10 - restProgress
@@ -149,7 +152,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun setExerciseProgressBar() {
         binding?.progressBarEx?.progress = exerciseProgress
-        exerciseTimer = object : CountDownTimer(3000, 1000) {
+        exerciseTimer = object : CountDownTimer(exerciseTimerDuration*3000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 exerciseProgress++
                 binding?.progressBarEx?.progress = 30 - exerciseProgress
@@ -157,10 +160,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
-                exerciseList!![currentExercisePosition].setIsCompleted(true)
-                exerciseList!![currentExercisePosition].setIsSelected(false)
-                exerciseAdapter!!.notifyDataSetChanged()
+
                 if (currentExercisePosition < exerciseList?.size!! - 1) {
+                    exerciseList!![currentExercisePosition].setIsCompleted(true)
+                    exerciseList!![currentExercisePosition].setIsSelected(false)
+                    exerciseAdapter!!.notifyDataSetChanged()
                     setUpRestView()
                 } else {
                     Toast.makeText(
@@ -168,7 +172,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                         "Congratulations! You have Complete the 7 minutes workout.",
                         Toast.LENGTH_LONG,
                     ).show()
-                    val intent:Intent = Intent(this@ExerciseActivity,MainActivity::class.java)
+                    val intent: Intent = Intent(this@ExerciseActivity, FinishActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -193,7 +197,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             tts!!.shutdown()
         }
 
-        if(player !=null){
+        if (player != null) {
             player!!.stop()
         }
         binding = null
