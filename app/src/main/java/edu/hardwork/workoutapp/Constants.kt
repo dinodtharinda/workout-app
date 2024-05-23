@@ -9,12 +9,12 @@ object Constants {
             R.drawable.ic_lunge,
         )
         val pushUp = ExerciseModel(
-            1,
+            2,
             "Push Up",
             R.drawable.ic_push_up,
         )
         val squat = ExerciseModel(
-            1,
+            3,
             "Squat",
             R.drawable.ic_squat,
         )
