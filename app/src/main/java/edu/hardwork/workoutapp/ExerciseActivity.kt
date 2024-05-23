@@ -1,5 +1,6 @@
 package edu.hardwork.workoutapp
 
+import android.app.Dialog
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.hardwork.workoutapp.databinding.ActivityExerciseBinding
+import edu.hardwork.workoutapp.databinding.DialogCustomBackConfirmationBinding
 import java.util.Locale
 
 class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
@@ -56,13 +58,19 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         tts = TextToSpeech(this, this)
 
         binding?.toolbarExercise?.setNavigationOnClickListener {
-            onBackPressed()
+            customDialogForBackButton()
         }
 
         setUpRestView()
 
         setupExerciseStatusRecyclerView()
 
+    }
+
+
+    override fun onBackPressed() {
+        customDialogForBackButton()
+        super.onBackPressed()
     }
 
 
@@ -73,6 +81,26 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
 
         binding?.rvExerciseStatus?.adapter = exerciseAdapter
+
+    }
+
+    private fun customDialogForBackButton() {
+        Log.e("dialog", "working")
+        val customDialog = Dialog(this)
+        val dialogBinding = DialogCustomBackConfirmationBinding.inflate(layoutInflater)
+        customDialog.setContentView(dialogBinding.root)
+        customDialog.setCanceledOnTouchOutside(false)
+        dialogBinding.btnYes.setOnClickListener {
+            this@ExerciseActivity.finish()
+            customDialog.dismiss()
+        }
+
+        dialogBinding.btnNo.setOnClickListener {
+
+            customDialog.dismiss()
+        }
+
+        customDialog.show()
 
     }
 
@@ -152,7 +180,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun setExerciseProgressBar() {
         binding?.progressBarEx?.progress = exerciseProgress
-        exerciseTimer = object : CountDownTimer(exerciseTimerDuration*3000, 1000) {
+        exerciseTimer = object : CountDownTimer(exerciseTimerDuration * 3000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 exerciseProgress++
                 binding?.progressBarEx?.progress = 30 - exerciseProgress
