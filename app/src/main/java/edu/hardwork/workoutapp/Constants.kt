@@ -1,6 +1,8 @@
 package edu.hardwork.workoutapp
 
 object Constants {
+
+
     fun defaultExerciseList():ArrayList<ExerciseModel> {
         val exerciseList = ArrayList<ExerciseModel>()
         val jumpingJacks = ExerciseModel(
