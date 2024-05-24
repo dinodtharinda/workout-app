@@ -11,13 +11,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <RadioGroup
+        android:id="@+id/rgUnits"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_bmi"
+        android:layout_margin="10dp"
+        android:background="@drawable/drawable_radio_group_tab_background"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbMetricUnits"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.50"
+            android:background="@drawable/drawable_units_tab_selector"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="METRIC UNIT"
+            android:textColor="@drawable/drawable_units_tab_text_color_selector"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/rbUsUnits"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.50"
+            android:background="@drawable/drawable_units_tab_selector"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="US UNIT"
+            android:textColor="@drawable/drawable_units_tab_text_color_selector"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RadioGroup>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilMetricUnitWeight"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar_bmi"
+        android:layout_below="@id/rgUnits"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="10dp"
         app:boxStrokeColor="@color/colorAccent"
@@ -32,9 +70,8 @@
             android:layout_height="wrap_content"
             android:hint="WEIGHT (in Kg)"
             android:inputType="numberDecimal"
-            android:textSize="16sp"
             android:textColorHint="@color/lightGrey"
-            />
+            android:textSize="16sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,13 +154,13 @@
             android:textSize="19sp" />
 
 
-
     </LinearLayout>
+
     <Button
         android:id="@+id/btnCalculate"
-        android:layout_below="@id/llDisplayBMIResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/llDisplayBMIResult"
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorAccent"
         android:text="Calculate"
